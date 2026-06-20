@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
-import spacy
+import spacy # type: ignore
 from collections import Counter
+
+from pos_tagger import extract_pos_features
 
 
 SAMPLE_SIZE = 50
@@ -17,34 +19,6 @@ FEATURE_COLS = [
     "propernouns_ratio",
     "adjective_noun_ratio",
 ]
-
-def extract_pos_features(text):
-    doc = model(text)
-
-    tokens = [t for t in doc if not t.is_punct and not t.is_space]
-    total = len(tokens)
-
-    counts = Counter(t.pos_ for t in tokens)
-
-    noun_ratio = counts.get("NOUN", 0) / total
-    verb_ratio = counts.get("VERB", 0) / total
-    adjective_ratio = counts.get("ADJ", 0)  / total
-    adverb_ratio = counts.get("ADV", 0)  / total
-    pronoun_ratio = counts.get("PRON", 0) / total
-    propernouns_ratio = counts.get("PROPN", 0) / total
-
-    noun_count = counts.get("NOUN", 0)
-    adjective_noun_ratio = counts.get("ADJ", 0) / noun_count if noun_count > 0 else 0
-
-    return {
-        "noun_ratio": noun_ratio,
-        "verb_ratio": verb_ratio,
-        "adjective_ratio": adjective_ratio,
-        "adverb_ratio": adverb_ratio,
-        "pronoun_ratio": pronoun_ratio,
-        "propernouns_ratio": propernouns_ratio,
-        "adjective_noun_ratio": adjective_noun_ratio,
-    }
 
 df = pd.read_csv("datasets/dataset.csv")
 

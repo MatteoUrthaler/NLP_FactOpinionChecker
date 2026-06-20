@@ -1,0 +1,75 @@
+import pandas as pd
+import spacy # type: ignore
+from collections import Counter
+import os
+
+
+OUTPUT_DIR = "output"
+if not os.path.exists(OUTPUT_DIR):
+    os.makedirs(OUTPUT_DIR)
+
+
+model = spacy.load("en_core_web_sm")
+
+
+df = pd.read_csv("datasets/dataset.csv")
+
+
+def extract_ner_features(text):
+    doc = model(text)
+
+    tokens = [t for t in doc if not t.is_punct and not t.is_space]
+    total = len(tokens)
+
+    entities = list(doc.ents)
+    total_entities = len(entities)
+
+    entity_counts = Counter(ent.label_ for ent in entities)
+
+    person_count = entity_counts.get("PERSON", 0)
+    organization_count = entity_counts.get("ORG", 0)
+    gpe_count = entity_counts.get("GPE", 0)
+    location_count = entity_counts.get("LOC", 0)
+    date_count = entity_counts.get("DATE", 0)
+
+    entity_ratio = total_entities / total
+    person_ratio = person_count / total
+    org_ratio = organization_count / total
+    gpe_ratio = gpe_count / total
+    location_ratio = location_count / total
+    date_ratio = date_count / total
+
+    return {
+        "entity_ratio": entity_ratio,
+        "person_ratio": person_ratio,
+        "organization_ratio": org_ratio,
+        "gpe_ratio": gpe_ratio,
+        "location_ratio": location_ratio,
+        "date_ratio": date_ratio,
+    }
+
+
+ner_features = df["Content"].apply(extract_ner_features)
+ner_df = pd.DataFrame(ner_features.tolist())
+
+
+result_df = pd.concat([ner_df, df["Classification"]], axis=1)
+print(result_df.head())
+
+
+feature_cols = [
+    "entity_ratio",
+    "person_ratio",
+    "organization_ratio",
+    "gpe_ratio",
+    "location_ratio",
+    "date_ratio",
+]
+
+
+means = result_df.groupby("Classification")[feature_cols].mean()
+
+print("\nAverages:")
+print(means)
+
+means.to_csv(OUTPUT_DIR + "/fact_opinion_ner_means.csv", index=True)

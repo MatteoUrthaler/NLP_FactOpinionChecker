@@ -1,5 +1,5 @@
 import pandas as pd
-import spacy
+import spacy # type: ignore
 from collections import Counter
 import json
 import os
@@ -67,4 +67,4 @@ means = result_df.groupby("Classification")[feature_cols].mean()
 print("\nAverages:")
 print(means)
 
-means.to_csv(OUTPUT_DIR + "/fact_opinion_means.csv", index=True)
+means.to_csv(OUTPUT_DIR + "/fact_opinion_pos_means.csv", index=True)
