@@ -7,7 +7,7 @@ TRAIN_RATIO = 0.7
 TEST_RATIO = 0.3
 
 
-SPLIT_DIR = "../../datasets/split"
+SPLIT_DIR = "datasets/split"
 if not os.path.exists(SPLIT_DIR):
     os.makedirs(SPLIT_DIR)
 
@@ -15,7 +15,7 @@ TRAINING_PATH = SPLIT_DIR + "/train.csv"
 TEST_PATH = SPLIT_DIR + "/test.csv"
 
 
-df = pd.read_csv("../../datasets/dataset.csv")
+df = pd.read_csv("datasets/dataset.csv")
 
 
 df = df.sample(frac=1).reset_index(drop=True)
