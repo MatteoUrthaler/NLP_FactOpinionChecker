@@ -5,12 +5,12 @@ from collections import Counter
 from emotion_analysis import extract_emotion_features
 
 
-SAMPLE_SIZE = 50
+SAMPLE_SIZE = 100
 
 FEATURE_COLS = [
-    "sentiment_compound",
-    "sentiment_pos",
-    "sentiment_neg",
+    #"sentiment_compound",
+    #"sentiment_pos",
+    #"sentiment_neg",
     "sentiment_neu",
     "subjectivity",
 ]

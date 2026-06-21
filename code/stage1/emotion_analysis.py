@@ -22,18 +22,25 @@ def extract_emotion_features(text):
     subjectivity = blob.sentiment.subjectivity
     
     return {
-        # emotional intensity score (can be -1 to 1)
-        # ==> -1 extreme negative | 0 fully neutral | 1 extremely positive
-        "sentiment_compound": vader_scores["compound"],
-        # ratio of positive words
-        "sentiment_pos": vader_scores["pos"],
-        # ratio of negative words
-        "sentiment_neg": vader_scores["neg"],
         # ratio of neutral words
         "sentiment_neu": vader_scores["neu"],
-        # subjectivity score (can be 0 to 1)
+        # subjectivity score
         # ==> 0 fully objective | 1 fully subjective
         "subjectivity": subjectivity
+
+        # at one point we also had these features in mind:
+
+        # we came to the conclusion that these were redundant information (already covered by others)
+        # ratio of positive words
+        # "sentiment_pos": vader_scores["pos"],
+        # ratio of negative words
+        # "sentiment_neg": vader_scores["neg"],
+        
+        # we replaced the compund by 'sentiment_neutral' to capture intensity without directional bias
+        # emotional intensity score (can be -1 to 1)
+        # ==> -1 extreme negative | 0 fully neutral | 1 extremely positive
+        # "sentiment_compound": vader_scores["compound"],
+
     }
 
 
@@ -47,9 +54,9 @@ print(result_df.head())
 
 
 feature_cols = [
-    "sentiment_compound",
-    "sentiment_pos",
-    "sentiment_neg",
+    #"sentiment_compound",
+    #"sentiment_pos",
+    #"sentiment_neg",
     "sentiment_neu",
     "subjectivity"
 ]
