@@ -5,9 +5,6 @@ from collections import Counter
 from readability_analysis import extract_readability_features
 import sys
 
-input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset.csv"
-means_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_readability_means.csv"
-
 SAMPLE_SIZE = 100
 
 FEATURE_COLS = [
@@ -17,16 +14,6 @@ FEATURE_COLS = [
     "flesch_reading_ease"
 ]
 
-
-df = pd.read_csv(input_csv)
-
-means = pd.read_csv(means_csv, index_col=0)
-
-fact_mean = means.loc["fact", FEATURE_COLS].values.astype(float)
-opinion_mean = means.loc["opinion", FEATURE_COLS].values.astype(float)
-
-
-sample_df = df.sample(n=SAMPLE_SIZE, random_state=69).copy()
 
 def predict_text(text):
     features = extract_readability_features(text)
@@ -38,18 +25,31 @@ def predict_text(text):
     prediction = "fact" if dist_fact < dist_opinion else "opinion"
     return prediction
 
+if __name__ == "__main__":
 
-correct_count = 0
-total = len(sample_df)
+    input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset.csv"
+    means_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_readability_means.csv"
 
-for _, row in sample_df.iterrows():
-    prediction = predict_text(row["Content"])
+    df = pd.read_csv(input_csv)
 
-    if prediction == row["Classification"]:
-        correct_count += 1
+    sample_df = df.sample(n=SAMPLE_SIZE, random_state=69).copy()
+    
+    means = pd.read_csv(means_csv, index_col=0)
 
-accuracy = (correct_count / total) * 100
+    fact_mean = means.loc["fact", FEATURE_COLS].values.astype(float)
+    opinion_mean = means.loc["opinion", FEATURE_COLS].values.astype(float)
 
-print(f"\nSample size: {SAMPLE_SIZE}")
-print(f"Accuracy: {accuracy:.2f}%")
-print(f"Correct guesses: {correct_count} / {SAMPLE_SIZE}")
+    correct_count = 0
+    total = len(sample_df)
+
+    for _, row in sample_df.iterrows():
+        prediction = predict_text(row["Content"])
+
+        if prediction == row["Classification"]:
+            correct_count += 1
+
+    accuracy = (correct_count / total) * 100
+
+    print(f"\nSample size: {SAMPLE_SIZE}")
+    print(f"Accuracy: {accuracy:.2f}%")
+    print(f"Correct guesses: {correct_count} / {SAMPLE_SIZE}")

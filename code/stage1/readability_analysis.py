@@ -3,17 +3,12 @@ import os
 import textstat
 import sys
 
-input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset.csv"
-output_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_readability_means.csv"
-
 OUTPUT_DIR = "output"
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
 textstat.set_lang("en")
 
-
-df = pd.read_csv(input_csv)
 
 def extract_readability_features(text):
 
@@ -50,26 +45,32 @@ def extract_readability_features(text):
         "flesch_reading_ease": flesch_scaled
     }
 
+if __name__ == "__main__":
 
-readability_features = df["Content"].apply(extract_readability_features)
-readability_df = pd.DataFrame(readability_features.tolist())
-
-result_df = pd.concat([readability_df, df["Classification"]], axis=1)
-print(result_df.head())
+    input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset.csv"
+    output_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_readability_means.csv"
 
 
+    df = pd.read_csv(input_csv)
 
+    readability_features = df["Content"].apply(extract_readability_features)
+    readability_df = pd.DataFrame(readability_features.tolist())
 
-feature_cols = [
-    #"avg_sentence_length",
-    #"avg_syllables_per_word",
-    "difficult_words_ratio",
-    "flesch_reading_ease"
-]
+    result_df = pd.concat([readability_df, df["Classification"]], axis=1)
+    #print(result_df.head())
 
-means = result_df.groupby("Classification")[feature_cols].mean()
+    feature_cols = [
+        #"avg_sentence_length",
+        #"avg_syllables_per_word",
+        "difficult_words_ratio",
+        "flesch_reading_ease"
+    ]
 
-print("\nAverages for readability:")
-print(means)
+    means = result_df.groupby("Classification")[feature_cols].mean()
 
-means.to_csv(output_csv, index=True)
+    #print("\nAverages for readability:")
+    #print(means)
+
+    means.to_csv(output_csv, index=True)
+
+print("readability done")

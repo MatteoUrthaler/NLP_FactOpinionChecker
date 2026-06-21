@@ -4,19 +4,12 @@ from collections import Counter
 import os
 import sys
 
-input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset.csv"
-output_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_pos_means.csv"
-
-
 OUTPUT_DIR = "output"
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
 #python -m spacy download en_core_web_sm)
 model = spacy.load("en_core_web_sm")
-
-
-df = pd.read_csv(input_csv)
 
 def extract_pos_features(text):
     doc = model(text)
@@ -46,30 +39,34 @@ def extract_pos_features(text):
         "adjective_noun_ratio": adjective_noun_ratio,
     }
 
+if __name__ == "__main__":
 
+    input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset.csv"
+    output_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_pos_means.csv"
 
-pos_features = df["Content"].apply(extract_pos_features)
-pos_df = pd.DataFrame(pos_features.tolist())
+    df = pd.read_csv(input_csv)
 
-result_df = pd.concat([pos_df, df["Classification"]], axis=1)
-#print(result_df.head())
+    pos_features = df["Content"].apply(extract_pos_features)
+    pos_df = pd.DataFrame(pos_features.tolist())
 
+    result_df = pd.concat([pos_df, df["Classification"]], axis=1)
+    #print(result_df.head())
 
+    feature_cols = [
+        "noun_ratio",
+        "verb_ratio",
+        "adjective_ratio",
+        "adverb_ratio",
+        "pronoun_ratio",
+        "propernouns_ratio",
+        "adjective_noun_ratio",
+    ]
 
-feature_cols = [
-    "noun_ratio",
-    "verb_ratio",
-    "adjective_ratio",
-    "adverb_ratio",
-    "pronoun_ratio",
-    "propernouns_ratio",
-    "adjective_noun_ratio",
-]
+    means = result_df.groupby("Classification")[feature_cols].mean()
 
-means = result_df.groupby("Classification")[feature_cols].mean()
+    #print("\nAverages:")
+    #print(means)
 
-#print("\nAverages:")
-#print(means)
+    means.to_csv(output_csv, index=True)
 
-means.to_csv(output_csv, index=True)
 print("pos done")
