@@ -5,7 +5,7 @@ import os
 import sys
 
 input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset.csv"
-output_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_means.csv"
+output_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_pos_means.csv"
 
 
 OUTPUT_DIR = "output"
@@ -72,4 +72,4 @@ means = result_df.groupby("Classification")[feature_cols].mean()
 #print(means)
 
 means.to_csv(output_csv, index=True)
-print("pos tagger done")
+print("pos done")

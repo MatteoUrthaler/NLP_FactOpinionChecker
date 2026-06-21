@@ -2,7 +2,10 @@ import pandas as pd
 import spacy # type: ignore
 from collections import Counter
 import os
+import sys
 
+input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset.csv"
+output_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_ner_means.csv"
 
 OUTPUT_DIR = "output"
 if not os.path.exists(OUTPUT_DIR):
@@ -12,7 +15,7 @@ if not os.path.exists(OUTPUT_DIR):
 model = spacy.load("en_core_web_sm")
 
 
-df = pd.read_csv("datasets/dataset.csv")
+df = pd.read_csv(input_csv)
 
 
 def extract_ner_features(text):
@@ -54,7 +57,7 @@ ner_df = pd.DataFrame(ner_features.tolist())
 
 
 result_df = pd.concat([ner_df, df["Classification"]], axis=1)
-print(result_df.head())
+#print(result_df.head())
 
 
 feature_cols = [
@@ -69,7 +72,8 @@ feature_cols = [
 
 means = result_df.groupby("Classification")[feature_cols].mean()
 
-print("\nAverages:")
-print(means)
+#print("\nAverages:")
+#print(means)
 
-means.to_csv(OUTPUT_DIR + "/fact_opinion_ner_means.csv", index=True)
+means.to_csv(output_csv, index=True)
+print("ner done")

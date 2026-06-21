@@ -36,12 +36,16 @@ for fold_number, (train_idx, test_idx) in enumerate(skf.split(x, y), start=1):
     test_df.to_csv(test_path, index=False)
 
     subprocess.run(
-        ["python3", "code/stage1/pos_tagger.py", train_path, means_path],
+        #["python3", "code/stage1/pos_tagger.py", train_path, means_path],
+        #["python3", "code/stage1/NER.py", train_path, means_path],
+        ["python3", "code/stage1/error_analysis.py", train_path, means_path],
         check=True
     )
 
     result = subprocess.run(
-        ["python3", "code/stage1/pos_guesser.py", test_path, means_path],
+        #["python3", "code/stage1/pos_guesser.py", test_path, means_path],
+        #["python3", "code/stage1/NER_guesser.py", test_path, means_path],
+        ["python3", "code/stage1/error_guesser.py", test_path, means_path],
         check=True,
         capture_output=True,
         text=True

@@ -2,7 +2,10 @@ import pandas as pd
 import spacy
 import language_tool_python
 import os
+import sys
 
+input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset.csv"
+output_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_error_means.csv"
 
 OUTPUT_DIR = "output"
 if not os.path.exists(OUTPUT_DIR):
@@ -16,7 +19,7 @@ model = spacy.load("en_core_web_sm")
 tool = language_tool_python.LanguageTool("en-US")
 
 
-df = pd.read_csv("datasets/dataset.csv")
+df = pd.read_csv(input_csv)
 
 
 def extract_error_features(text):
@@ -48,10 +51,8 @@ def extract_error_features(text):
 error_features = df["Content"].apply(extract_error_features)
 error_df = pd.DataFrame(error_features.tolist())
 
-print(error_df.head())
-
 result_df = pd.concat([error_df, df["Classification"]], axis=1)
-print(result_df.head())
+#print(result_df.head())
 
 
 feature_cols = [
@@ -62,8 +63,9 @@ feature_cols = [
 
 means = result_df.groupby("Classification")[feature_cols].mean()
 
-print("\nAverages:")
-print(means)
+#print("\nAverages:")
+#print(means)
 
 
-means.to_csv(OUTPUT_DIR + "/fact_opinion_error_means.csv", index=True)
+means.to_csv(output_csv, index=True)
+print("error done")

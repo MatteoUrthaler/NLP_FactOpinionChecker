@@ -4,7 +4,10 @@ import spacy
 import language_tool_python
 
 from error_analysis import extract_error_features
+import sys
 
+input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset.csv"
+means_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_error_means.csv"
 
 SAMPLE_SIZE = 50
 
@@ -18,8 +21,8 @@ FEATURE_COLS = [
 ]
 
 
-df = pd.read_csv("datasets/dataset.csv")
-means = pd.read_csv("output/fact_opinion_error_means.csv", index_col=0)
+df = pd.read_csv(input_csv)
+means = pd.read_csv(means_csv, index_col=0)
 
 fact_mean = means.loc["fact", FEATURE_COLS].values.astype(float)
 opinion_mean = means.loc["opinion", FEATURE_COLS].values.astype(float)
