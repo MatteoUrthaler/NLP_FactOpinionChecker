@@ -1,6 +1,10 @@
 import pandas as pd
 import os
 import textstat
+import sys
+
+input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset.csv"
+output_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_readability_means.csv"
 
 OUTPUT_DIR = "output"
 if not os.path.exists(OUTPUT_DIR):
@@ -9,7 +13,7 @@ if not os.path.exists(OUTPUT_DIR):
 textstat.set_lang("en")
 
 
-df = pd.read_csv("datasets/dataset.csv")
+df = pd.read_csv(input_csv)
 
 def extract_readability_features(text):
 
@@ -68,4 +72,4 @@ means = result_df.groupby("Classification")[feature_cols].mean()
 print("\nAverages for readability:")
 print(means)
 
-means.to_csv(OUTPUT_DIR + "/fact_opinion_readability_means.csv", index=True)
+means.to_csv(output_csv, index=True)
