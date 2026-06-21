@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.model_selection import StratifiedKFold
 
 
-N_SPLITS = 10
+N_SPLITS = 5
 RANDOM_STATE = 69
 
 INPUT_DATASET = "datasets/dataset.csv"
