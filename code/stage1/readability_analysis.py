@@ -21,17 +21,29 @@ def extract_readability_features(text):
     difficult_words_ratio = (difficult_words / total_words)
     
     flesch_ease = textstat.flesch_reading_ease(text)
+
+    if flesch_ease < 0:
+        flesch_ease = 0
+
+    if flesch_ease > 100:
+        flesch_ease = 100
+
+    flesch_min = 0
+    flesch_max = 100
+    flesch_scaled = (flesch_ease - flesch_min) / (flesch_max - flesch_min)
+    
+    flesch_scaled = max(0.0, min(1.0, flesch_scaled))
     
     return {
         # average number of words per sentence
-        "avg_sentence_length": avg_sentence_length,
+        #"avg_sentence_length": avg_sentence_length,
         # average number of syllables per word
-        "avg_syllables_per_word": avg_syllables_per_word,
+        #"avg_syllables_per_word": avg_syllables_per_word,
         # ratio of difficult words (3 or more syllables)
         "difficult_words_ratio": difficult_words_ratio,
         # Flesch Reading Ease score (can be 0 to 100)
         # ==> 100 easy to read | 0 difficult to read (academic)
-        "flesch_reading_ease": flesch_ease
+        "flesch_reading_ease": flesch_scaled
     }
 
 
@@ -45,8 +57,8 @@ print(result_df.head())
 
 
 feature_cols = [
-    "avg_sentence_length",
-    "avg_syllables_per_word",
+    #"avg_sentence_length",
+    #"avg_syllables_per_word",
     "difficult_words_ratio",
     "flesch_reading_ease"
 ]

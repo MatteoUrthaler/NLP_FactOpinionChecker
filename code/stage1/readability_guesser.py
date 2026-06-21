@@ -5,11 +5,11 @@ from collections import Counter
 from readability_analysis import extract_readability_features
 
 
-SAMPLE_SIZE = 50
+SAMPLE_SIZE = 100
 
 FEATURE_COLS = [
-    "avg_sentence_length",
-    "avg_syllables_per_word",
+    #"avg_sentence_length",
+    #"avg_syllables_per_word",
     "difficult_words_ratio",
     "flesch_reading_ease"
 ]
