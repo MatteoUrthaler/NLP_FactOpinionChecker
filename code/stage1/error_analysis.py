@@ -20,6 +20,12 @@ def extract_error_features(text):
 
     tokens = [t for t in model(text) if not t.is_punct and not t.is_space]
     total_tokens = len(tokens)
+    if total_tokens == 0:
+        return {
+            "error_ratio": 0.0,
+            "spelling_error_ratio": 0.0,
+            "grammar_error_ratio": 0.0,
+        }
 
     spelling_count = 0
     grammar_count = 0

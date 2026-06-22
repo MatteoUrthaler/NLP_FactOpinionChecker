@@ -17,7 +17,11 @@ def extract_readability_features(text):
     
     difficult_words = textstat.difficult_words(text)
     total_words = textstat.lexicon_count(text, removepunct=True)
-    difficult_words_ratio = (difficult_words / total_words)
+    if total_words == 0:
+        difficult_words_ratio = 0.0
+    else:
+        difficult_words_ratio = (difficult_words / total_words)
+
     
     flesch_ease = textstat.flesch_reading_ease(text)
 

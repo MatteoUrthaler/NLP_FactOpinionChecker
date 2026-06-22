@@ -10,7 +10,7 @@ OUTPUT_DIR = "output"
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
-nltk.download('vader_lexicon')
+nltk.download('vader_lexicon', quiet=True)
 nltk_sentiment_intensity_analyzer = SentimentIntensityAnalyzer()
 
 

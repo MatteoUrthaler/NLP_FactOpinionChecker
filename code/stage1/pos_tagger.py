@@ -19,6 +19,17 @@ def extract_pos_features(text):
 
     counts = Counter(t.pos_ for t in tokens)
 
+    if total == 0:
+        return {
+            "noun_ratio": 0.0,
+            "verb_ratio": 0.0,
+            "adjective_ratio": 0.0,
+            "adverb_ratio": 0.0,
+            "pronoun_ratio": 0.0,
+            "propernouns_ratio": 0.0,
+            "adjective_noun_ratio": 0.0,
+        }
+
     noun_ratio = counts.get("NOUN", 0) / total
     verb_ratio = counts.get("VERB", 0) / total
     adjective_ratio = counts.get("ADJ", 0)  / total

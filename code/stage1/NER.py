@@ -17,6 +17,16 @@ def extract_ner_features(text):
     tokens = [t for t in doc if not t.is_punct and not t.is_space]
     total = len(tokens)
 
+    if total == 0:
+        return {
+            "entity_ratio": 0.0,
+            "person_ratio": 0.0,
+            "organization_ratio": 0.0,
+            "gpe_ratio": 0.0,
+            "location_ratio": 0.0,
+            "date_ratio": 0.0,
+        }
+
     entities = list(doc.ents)
     total_entities = len(entities)
 
