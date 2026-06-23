@@ -17,7 +17,7 @@ DATASET_TRAIN_RAW = "datasets/dataset.csv"
 DATASET_VALIDATE_RAW = "datasets/validationset.csv"
 DATASET_TRAIN = "datasets/dataset_clean.csv"
 DATASET_VALIDATE = "datasets/validationset_clean.csv"
-OUTPUT = "output/group6_classifications_1.csv"
+OUTPUT = "group6_classifications_1.csv"
 
 MODEL = "output/verdict_model.pkl"
 FEATURES = "output/verdict_features.pkl"

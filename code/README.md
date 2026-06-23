@@ -1,6 +1,6 @@
 # NLP Project - Group 6
 
-Automated pipeline for classifying text data into *Fact* or *Opinion*. The pipeline handles the entire workflow: text preprocessing (cleaning, filtering characters, symbol ratios, and prompt injections), feature extraction, model training, and evaluation by classifying the validationset.csv.
+Automated pipeline for classifying text data into **Fact** or **Opinion**. The pipeline handles the entire workflow: text preprocessing (cleaning, filtering characters, symbol ratios, and prompt injections), feature extraction, model training, and evaluation by classifying the validationset.csv.
 
 ## Setup
 
@@ -21,7 +21,7 @@ Create and activate a virtual environment:
    source .venv/bin/activate
    ```
 
-Install requirements:
+Install requirements from root directory:
    ```bash
    # Install requirements
    pip install -r requirements.txt
@@ -36,4 +36,4 @@ Please execute from root directory:
    python code/stage1/verdict.py
    ```
 
-After the pipeline completes successfully, all generated artifacts will be stored in the output/ directory. The final predictions for the validation set can be found in output/group6_classifications_1.csv
+After the pipeline completes successfully, all generated artifacts will be stored in the output/ directory. The final predictions for the validation set can be found in *group6_classifications_1.csv*.
