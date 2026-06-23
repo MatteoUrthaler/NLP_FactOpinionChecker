@@ -2,10 +2,6 @@ import pandas as pd
 import unicodedata
 import re
 
-#INPUT_FILE = "datasets/validationset.csv"
-#OUTPUT_FILE = "datasets/validationset_clean.csv"
-INPUT_FILE = "datasets/dataset.csv"
-OUTPUT_FILE = "datasets/dataset_clean.csv"
 COLUMN_NAME = "Content"
 
 def normalize(text):
@@ -47,26 +43,31 @@ def prompt_injection(text):
 def should_drop(text):
     return prompt_injection(text) or cjk(text) or symbol_ratio(text)
 
-def capitaize(x):
+def capitalize(x):
     if x == "fact":
         return "Fact"
     if x == "opinion":
         return "Opinion"
     return x
 
+def run_preprocessing(input_file, output_file):
 
-df = pd.read_csv(INPUT_FILE)
+    df = pd.read_csv(input_file)
 
-if INPUT_FILE == "datasets/dataset.csv":
-    df['Classification'] = df['Classification'].str.lower()
-    df['Classification'] = df['Classification'].apply(capitaize)
+    if input_file == "datasets/dataset.csv":
+        df['Classification'] = df['Classification'].str.lower()
+        df['Classification'] = df['Classification'].apply(capitalize)
 
-df[COLUMN_NAME] = df[COLUMN_NAME].apply(normalize)
-df["drop_row"] = df[COLUMN_NAME].apply(should_drop)
+    df[COLUMN_NAME] = df[COLUMN_NAME].apply(normalize)
+    df["drop_row"] = df[COLUMN_NAME].apply(should_drop)
 
-df.reset_index(inplace=True)
-df.rename(columns={"index": "original_index"}, inplace=True)
+    df.reset_index(inplace=True)
+    df.rename(columns={"index": "original_index"}, inplace=True)
 
-df["original_index"] = range(1, len(df) + 1)
+    df["original_index"] = range(1, len(df) + 1)
 
-df.to_csv(OUTPUT_FILE, index=False)
+    df.to_csv(output_file, index=False)
+
+if __name__ == "__main__":
+    run_preprocessing("datasets/dataset.csv", "datasets/dataset_clean.csv")
+    run_preprocessing("datasets/validationset.csv", "datasets/validationset_clean.csv")
