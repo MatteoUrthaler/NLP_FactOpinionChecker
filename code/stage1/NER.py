@@ -56,7 +56,7 @@ def extract_ner_features(text):
 
 if __name__ == "__main__":
 
-    input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset.csv"
+    input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset_clean.csv"
     output_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_ner_means.csv"
 
     df = pd.read_csv(input_csv)

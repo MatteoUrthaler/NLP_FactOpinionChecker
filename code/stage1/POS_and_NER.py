@@ -33,8 +33,8 @@ combined_means.to_csv("output/fact_opinion_combined_means.csv", index=True)
 
 means = pd.read_csv("output/fact_opinion_combined_means.csv", index_col=0)
 
-fact_mean = means.loc["fact", FEATURE_COLS].values.astype(float)
-opinion_mean = means.loc["opinion", FEATURE_COLS].values.astype(float)
+fact_mean = means.loc["Fact", FEATURE_COLS].values.astype(float)
+opinion_mean = means.loc["Opinion", FEATURE_COLS].values.astype(float)
 
 
 def extract_combined_features(text):
@@ -50,9 +50,9 @@ def predict_text(text):
     dist_fact = np.linalg.norm(x - fact_mean)
     dist_opinion = np.linalg.norm(x - opinion_mean)
 
-    return "fact" if dist_fact < dist_opinion else "opinion"
+    return "Fact" if dist_fact < dist_opinion else "Opinion"
 
-df = pd.read_csv("datasets/dataset.csv")
+df = pd.read_csv("datasets/dataset_clean.csv")
 
 sample_df = df.sample(n=SAMPLE_SIZE, random_state=69).copy()
 

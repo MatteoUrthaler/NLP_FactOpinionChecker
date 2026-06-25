@@ -16,7 +16,7 @@ from error_guesser import FEATURE_COLS as ERROR_COLS
 from readability_guesser import FEATURE_COLS as READABILITY_COLS
 
 
-INPUT_DATASET = "datasets/dataset.csv"
+INPUT_DATASET = "datasets/dataset_clean.csv"
 N_SPLITS = 5
 RANDOM_STATE = 69
 
@@ -109,7 +109,7 @@ def predict_text(text, fact_mean, opinion_mean, feature_cols, weight_vector):
     dist_fact = np.linalg.norm(weighted_x - weighted_fact_mean)
     dist_opinion = np.linalg.norm(weighted_x - weighted_opinion_mean)
 
-    return "fact" if dist_fact < dist_opinion else "opinion"
+    return "Fact" if dist_fact < dist_opinion else "Opinion"
 
 
 df = pd.read_csv(INPUT_DATASET)
@@ -139,8 +139,8 @@ for fold_number, (train_idx, test_idx) in enumerate(skf.split(x, y), start=1):
 
     means = train_result_df.groupby("Classification")[feature_cols].mean()
 
-    fact_mean = means.loc["fact", feature_cols].values.astype(float)
-    opinion_mean = means.loc["opinion", feature_cols].values.astype(float)
+    fact_mean = means.loc["Fact", feature_cols].values.astype(float)
+    opinion_mean = means.loc["Opinion", feature_cols].values.astype(float)
 
     correct_count = 0
     total = len(test_df)

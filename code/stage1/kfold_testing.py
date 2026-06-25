@@ -9,7 +9,7 @@ from sklearn.model_selection import StratifiedKFold
 N_SPLITS = 5
 RANDOM_STATE = 69
 
-INPUT_DATASET = "datasets/dataset.csv"
+INPUT_DATASET = "datasets/dataset_clean.csv"
 WORK_DIR = "output/kfold_pos"
 
 os.makedirs(WORK_DIR, exist_ok=True)

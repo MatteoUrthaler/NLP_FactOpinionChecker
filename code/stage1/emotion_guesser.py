@@ -22,20 +22,20 @@ def predict_text(text):
     dist_fact = np.linalg.norm(x - fact_mean)
     dist_opinion = np.linalg.norm(x - opinion_mean)
 
-    prediction = "fact" if dist_fact < dist_opinion else "opinion"
+    prediction = "Fact" if dist_fact < dist_opinion else "Opinion"
     return prediction
 
 if __name__ == "__main__":
 
-    input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset.csv"
+    input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset_clean.csv"
     means_csv = sys.argv[2] if len(sys.argv) > 2 else "output/fact_opinion_emotion_means.csv"
 
     df = pd.read_csv(input_csv)
 
     means = pd.read_csv(means_csv, index_col=0)
 
-    fact_mean = means.loc["fact", FEATURE_COLS].values.astype(float)
-    opinion_mean = means.loc["opinion", FEATURE_COLS].values.astype(float)
+    fact_mean = means.loc["Fact", FEATURE_COLS].values.astype(float)
+    opinion_mean = means.loc["Opinion", FEATURE_COLS].values.astype(float)
 
 
     sample_df = df.sample(n=SAMPLE_SIZE, random_state=69).copy()
