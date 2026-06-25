@@ -4,24 +4,20 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 
 df = pd.read_csv("datasets/dataset_clean.csv")
 
-classifier = pipeline(
-    "zero-shot-classification",
-    model="facebook/bart-large-mnli",
-    device=0
-)
+classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli", device=-1)
 
 predictions = []
 
 for i, row in df.iterrows():
     result = classifier(row["Content"], candidate_labels=["Fact", "Opinion"])
     predictions.append(result["labels"][0] )
+    #print(result)
     print(i)
 
 
 classification = df["Classification"].tolist()
 
 print(f"Accuracy: {accuracy_score(classification, predictions):.2%}")
-print("\nReport:")
 print(classification_report(classification, predictions, target_names=["Fact", "Opinion"]))
 print("\nConfusion Matrix:")
 print(confusion_matrix(classification, predictions, labels=["Fact", "Opinion"]))
@@ -29,7 +25,6 @@ print(confusion_matrix(classification, predictions, labels=["Fact", "Opinion"]))
 """RESULTS:
 Accuracy: 59.53%
 
-Report:
               precision    recall  f1-score   support
 
         Fact       0.61      0.62      0.61       443

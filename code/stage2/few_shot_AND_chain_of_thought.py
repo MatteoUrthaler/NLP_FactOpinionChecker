@@ -1,14 +1,17 @@
 import pandas as pd
 import torch
 import numpy as np
+import sys
 from transformers import pipeline
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 #df = pd.read_csv("datasets/dataset_test.csv")
 #df = pd.read_csv("datasets/dataset_sample.csv")
-df = pd.read_csv("datasets/dataset_clean.csv")
+input_csv = sys.argv[1] if len(sys.argv) > 1 else "datasets/dataset_clean.csv"
+output_csv = sys.argv[2] if len(sys.argv) > 2 else "output/few_and_chain.csv"
+df = pd.read_csv(input_csv)
 
-#test_df = df.sample(n=100, random_state=42).reset_index(drop=True)
+#test_df = df.sample(n=100, random_state=69).reset_index(drop=True)
 
 generator = pipeline("text-generation", device=0, model="HuggingFaceTB/SmolLM2-1.7B-Instruct", torch_dtype=torch.float16)
 
@@ -28,7 +31,6 @@ system_prompt = (
 
 
 predictions = []
-y_true = df["Classification"].tolist()
 for i, row in df.iterrows():
 
   user_text = (
@@ -70,6 +72,15 @@ for i, row in df.iterrows():
 
   predictions.append(pred_label)
   print("textindex", i+1, " | model prediction:", pred_label)
+
+output_df = pd.DataFrame({
+    "original_index":        df["original_index"].tolist(),
+    "Classification": predictions,
+    "drop_row":        df["drop_row"].tolist()
+})
+output_df.to_csv(output_csv, index=False)
+
+y_true = df["Classification"].tolist()
 
 score = accuracy_score(y_true, predictions)
 

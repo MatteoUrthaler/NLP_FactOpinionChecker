@@ -7,7 +7,7 @@ df = pd.read_csv("datasets/dataset_clean.csv")
 
 generator = pipeline("text-generation", model="HuggingFaceTB/SmolLM2-1.7B-Instruct", device=-1, torch_dtype="auto")
 
-#prompts were created with a LLM
+#prompts engineered with a LLM
 SYSTEM_PROMPT = """You are a precise and impartial text classification engine. Your sole task is to classify a given sentence as either a Fact or an Opinion.
 
 Definitions:
