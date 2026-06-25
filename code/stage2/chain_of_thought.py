@@ -35,26 +35,23 @@ for i, row in df.iterrows():
   #print(model_response)
 
   if "fact" in model_response.lower()[-40:]:
-      pred_label = "Fact"
+      predict = "Fact"
   elif "opinion" in model_response.lower()[-40:]:
-      pred_label = "Opinion"
+      predict = "Opinion"
   else:
-      pred_label = "none"
+      predict = "none"
 
-  predictions.append(pred_label)
-  print("textindex", i+1, " | model prediction:", pred_label)
+  predictions.append(predict)
+  print("textindex", i+1, " | model prediction:", predict)
 
 score = accuracy_score(y_true, predictions)
 
-print("------------------------------")
 print("chain of thought result")
 print(f"Accuracy: {score:.2%}")
-
 print("Confusion Matrix:")
 print(confusion_matrix(y_true, predictions, labels=["Fact", "Opinion", "none"]))
 
 """
-------------------------------
 chain of thought result
 Accuracy: 78.36%
 Confusion Matrix:

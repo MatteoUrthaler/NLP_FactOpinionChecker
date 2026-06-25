@@ -5,9 +5,9 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 #df = pd.read_csv("datasets/dataset_sample.csv")
 df = pd.read_csv("datasets/dataset_clean.csv")
 
-generator = pipeline("text-generation", model="HuggingFaceTB/SmolLM2-1.7B-Instruct", device=-1, torch_dtype="auto")
+generator = pipeline("text-generation", model="HuggingFaceTB/SmolLM2-1.7B-Instruct", max_new_tokens=5, do_sample=False, device=-1, torch_dtype="auto")
 
-#prompts engineered with a LLM
+#prompts tuned with a LLM
 SYSTEM_PROMPT = """You are a precise and impartial text classification engine. Your sole task is to classify a given sentence as either a Fact or an Opinion.
 
 Definitions:
@@ -34,8 +34,9 @@ def verdict(text):
         {"role": "user",   "content": USER_TEMPLATE.format(text=text)}
     ]
 
-    out = generator(messages, max_new_tokens=5, do_sample=False)
+    out = generator(messages)
     result = out[0]["generated_text"][-1]["content"].strip().lower()
+    #print(out)
 
     if result.startswith("fact"):
         return "Fact"
@@ -45,12 +46,12 @@ def verdict(text):
         fails += 1
         return "Opinion"
 
-df["label_pred"] = df["Content"].apply(verdict)
+df["prediction"] = df["Content"].apply(verdict)
 
 print(f"Fails: {fails}\n")
-print(f"Accuracy: {accuracy_score(df["Classification"], df["label_pred"]):.2%}\n")
-print(classification_report(df["Classification"], df["label_pred"], target_names=["Fact", "Opinion"]))
-print(confusion_matrix(df["Classification"], df["label_pred"], labels=["Fact", "Opinion"]))
+print(f"Accuracy: {accuracy_score(df["Classification"], df["prediction"]):.2%}\n")
+print(classification_report(df["Classification"], df["prediction"], target_names=["Fact", "Opinion"]))
+print(confusion_matrix(df["Classification"], df["prediction"], labels=["Fact", "Opinion"]))
 
 """RESULTS:
 Accuracy: 61.40%

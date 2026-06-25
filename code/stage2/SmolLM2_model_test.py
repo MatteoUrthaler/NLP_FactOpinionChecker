@@ -17,7 +17,6 @@ system_prompt = (
 )
 
 predictions = []
-y_true = df["Classification"].tolist()
 for i, row in df.iterrows():
   user_text = f"Text to analyze: {row['Content']}"
   
@@ -31,32 +30,29 @@ for i, row in df.iterrows():
   #print(model_response)
   
   if "fact" in model_response.lower():
-      pred_label = "Fact"
+      predict = "Fact"
   elif "opinion" in model_response.lower():
-      pred_label = "Opinion"
+      predict = "Opinion"
   else:
-      pred_label = "none"
+      predict = "none"
   
-  predictions.append(pred_label)
-  print("textindex", i+1, " | model prediction:", pred_label)
+  predictions.append(predict)
+  print("textindex", i+1, " | model prediction:", predict)
 
 
+y_true = df["Classification"].tolist()
 score = accuracy_score(y_true, predictions)
 
-print("------------------------------")
 print("zero shot result")
 print(f"Accuracy: {score:.2%}")
-
 print("Confusion Matrix:")
 print(confusion_matrix(y_true, predictions, labels=["Fact", "Opinion", "none"]))
 
 """
-------------------------------
 zero shot result
 Accuracy: 66.43%
 Confusion Matrix:
 [[417  26   0]
  [261 151   0]
  [  0   0   0]]
-------------------------------
  """

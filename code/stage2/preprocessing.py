@@ -2,8 +2,6 @@ import pandas as pd
 import unicodedata
 import re
 
-COLUMN_NAME = "Content"
-
 def normalize(text):
     if pd.isna(text):
         return ""
@@ -58,8 +56,8 @@ def run_preprocessing(input_file, output_file):
         df['Classification'] = df['Classification'].str.lower()
         df['Classification'] = df['Classification'].apply(capitalize)
 
-    df[COLUMN_NAME] = df[COLUMN_NAME].apply(normalize)
-    df["drop_row"] = df[COLUMN_NAME].apply(should_drop)
+    df["Content"] = df["Content"].apply(normalize)
+    df["drop_row"] = df["Content"].apply(should_drop)
 
     df.reset_index(inplace=True)
     df.rename(columns={"index": "original_index"}, inplace=True)

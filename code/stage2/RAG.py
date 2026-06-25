@@ -22,7 +22,6 @@ system_prompt = (
 )
 
 predictions = []
-y_true = df["Classification"].tolist()
 for i, row in df.iterrows():
 
   #user_text = f"Text to analyze: {row['Content']}"
@@ -63,18 +62,16 @@ for i, row in df.iterrows():
   print("textindex", i+1, " | model prediction:", pred_label)
 
 
+y_true = df["Classification"].tolist()
 score = accuracy_score(y_true, predictions)
 
-print("------------------------------")
 print("RAG result")
 print(f"Accuracy: {score:.2%}")
-
 print("Confusion Matrix:")
 print(confusion_matrix(y_true, predictions, labels=["Fact", "Opinion", "none"]))
 
 
 """
-------------------------------
 RAG result
 Accuracy: 57.89%
 Confusion Matrix:
