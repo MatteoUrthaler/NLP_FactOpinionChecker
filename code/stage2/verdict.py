@@ -9,7 +9,7 @@ OUTPUT = "group6_classifications_2.csv"
 FEW_AND_CHAIN = "code/stage2/few_shot_AND_chain_of_thought.py"
 FAC_RESULTS = "output/few_and_chain_val.csv"
 
-RECOMPILE = False
+RECOMPILE = True
 
 def normalize_label(value):
     value = str(value).strip().lower()
