@@ -22,7 +22,7 @@ OUTPUT = "group6_classifications_1.csv"
 MODEL = "output/verdict_model.pkl"
 FEATURES = "output/verdict_features.pkl"
 
-TEXT_COL = "Content"
+TExT_COL = "Content"
 VERDICT_COL = "Classification"
 DROP_COL = "drop_row"
 
@@ -46,7 +46,7 @@ def extract_all_features(text):
     return pos_features | ner_features | emotion_features | readability_features
 
 def build_feature_frame(df):
-    combined_features = df[TEXT_COL].apply(extract_all_features)
+    combined_features = df[TExT_COL].apply(extract_all_features)
     features_df = pd.DataFrame(combined_features.tolist())
 
     for col in FEATURE_COLS:
@@ -74,11 +74,11 @@ if __name__ == "__main__":
     if RECOMPILE:
         df_train = pd.read_csv(DATASET_TRAIN)
 
-        X_train = build_feature_frame(df_train)
+        x_train = build_feature_frame(df_train)
         y_train = df_train[VERDICT_COL]
 
-        model = SVC(kernel="linear", C=1.0, random_state=42)
-        model.fit(X_train, y_train)
+        model = SVC(kernel="linear", C=1.0, random_state=69)
+        model.fit(x_train, y_train)
 
         with open(MODEL, "wb") as f:
             pickle.dump(model, f)

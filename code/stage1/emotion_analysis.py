@@ -6,13 +6,11 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from textblob import TextBlob
 import sys
 
-OUTPUT_DIR = "output"
-if not os.path.exists(OUTPUT_DIR):
-    os.makedirs(OUTPUT_DIR)
+if not os.path.exists("output"):
+    os.makedirs("output")
 
 nltk.download('vader_lexicon', quiet=True)
 nltk_sentiment_intensity_analyzer = SentimentIntensityAnalyzer()
-
 
 
 def extract_emotion_features(text):
@@ -22,10 +20,7 @@ def extract_emotion_features(text):
     subjectivity = blob.sentiment.subjectivity
     
     return {
-        # ratio of neutral words
         "sentiment_neu": vader_scores["neu"],
-        # subjectivity score
-        # ==> 0 fully objective | 1 fully subjective
         "subjectivity": subjectivity
 
         # at one point we also had these features in mind:
@@ -37,10 +32,7 @@ def extract_emotion_features(text):
         # "sentiment_neg": vader_scores["neg"],
         
         # we replaced the compund by 'sentiment_neutral' to capture intensity without directional bias
-        # emotional intensity score (can be -1 to 1)
-        # ==> -1 extreme negative | 0 fully neutral | 1 extremely positive
         # "sentiment_compound": vader_scores["compound"],
-
     }
 
 if __name__ == "__main__":

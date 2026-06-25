@@ -3,9 +3,8 @@ import os
 import textstat
 import sys
 
-OUTPUT_DIR = "output"
-if not os.path.exists(OUTPUT_DIR):
-    os.makedirs(OUTPUT_DIR)
+if not os.path.exists("output"):
+    os.makedirs("output")
 
 textstat.set_lang("en")
 
@@ -38,14 +37,9 @@ def extract_readability_features(text):
     flesch_scaled = max(0.0, min(1.0, flesch_scaled))
     
     return {
-        # average number of words per sentence
         #"avg_sentence_length": avg_sentence_length,
-        # average number of syllables per word
         #"avg_syllables_per_word": avg_syllables_per_word,
-        # ratio of difficult words (3 or more syllables)
         "difficult_words_ratio": difficult_words_ratio,
-        # Flesch Reading Ease score (can be 0 to 100)
-        # ==> 100 easy to read | 0 difficult to read (academic)
         "flesch_reading_ease": flesch_scaled
     }
 

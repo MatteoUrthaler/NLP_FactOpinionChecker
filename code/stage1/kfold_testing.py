@@ -60,7 +60,7 @@ for fold_number, (train_idx, test_idx) in enumerate(skf.split(x, y), start=1):
         accuracy = float(match.group(1))
         fold_accuracies.append(accuracy)
     else:
-        print(f"Missing accuracy for fold {fold_number}")
+        print(f"missing accuracy for fold {fold_number}")
 
 mean_accuracy = np.mean(fold_accuracies)
 std_accuracy = np.std(fold_accuracies)

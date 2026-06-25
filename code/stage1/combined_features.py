@@ -132,10 +132,7 @@ for fold_number, (train_idx, test_idx) in enumerate(skf.split(x, y), start=1):
     train_features = train_df["Content"].apply(extract_combined_features)
     train_features_df = pd.DataFrame(train_features.tolist())
 
-    train_result_df = pd.concat(
-        [train_features_df.reset_index(drop=True), train_df["Classification"].reset_index(drop=True)],
-        axis=1
-    )
+    train_result_df = pd.concat([train_features_df.reset_index(drop=True), train_df["Classification"].reset_index(drop=True)], axis=1)
 
     means = train_result_df.groupby("Classification")[feature_cols].mean()
 

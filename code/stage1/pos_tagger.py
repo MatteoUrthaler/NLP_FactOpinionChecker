@@ -4,11 +4,9 @@ from collections import Counter
 import os
 import sys
 
-OUTPUT_DIR = "output"
-if not os.path.exists(OUTPUT_DIR):
-    os.makedirs(OUTPUT_DIR)
+if not os.path.exists("output"):
+    os.makedirs("output")
 
-#python -m spacy download en_core_web_sm)
 model = spacy.load("en_core_web_sm")
 
 def extract_pos_features(text):
@@ -32,8 +30,8 @@ def extract_pos_features(text):
 
     noun_ratio = counts.get("NOUN", 0) / total
     verb_ratio = counts.get("VERB", 0) / total
-    adjective_ratio = counts.get("ADJ", 0)  / total
-    adverb_ratio = counts.get("ADV", 0)  / total
+    adjective_ratio = counts.get("ADJ", 0) / total
+    adverb_ratio = counts.get("ADV", 0) / total
     pronoun_ratio = counts.get("PRON", 0) / total
     propernouns_ratio = counts.get("PROPN", 0) / total
 

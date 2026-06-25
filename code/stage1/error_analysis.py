@@ -4,13 +4,11 @@ import language_tool_python
 import os
 import sys
 
-OUTPUT_DIR = "output"
-if not os.path.exists(OUTPUT_DIR):
-    os.makedirs(OUTPUT_DIR)
+if not os.path.exists("output"):
+    os.makedirs("output")
 
 model = spacy.load("en_core_web_sm")
 
-# pip install language-tool-python
 tool = language_tool_python.LanguageTool("en-US")
 
 
