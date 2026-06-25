@@ -37,3 +37,15 @@ Please execute from root directory:
    ```
 
 After the pipeline completes successfully, all generated artifacts will be stored in the output/ directory. The final predictions for the validation set can be found in *group6_classifications_1.csv*.
+
+
+## Run Pipeline Stage 2
+
+The pipeline is fully integrated so that you only need to run one single script.
+Please execute from root directory:
+
+   ```bash
+   python code/stage2/verdict.py
+   ```
+
+After the pipeline completes successfully the final predictions for the validation set can be found in *group6_classifications_2.csv*.
