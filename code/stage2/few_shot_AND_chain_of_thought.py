@@ -50,7 +50,7 @@ for i, row in df.iterrows():
 
       "Text to analyze: Given the overwhelming evidence of its harmful effects, any government that continues to allow tobacco advertising is putting corporate profits above the health of its citizens.\n"
       "Reasoning: Let's think step by step. The statement makes a moral and political accusation about government motivations ('putting corporate profits above health'). This is an interpretation and a political evaluation, which cannot be scientifically proven true or false. It is an opinion.\n\n"
-      
+
       f"Text to analyze: {row['Content']}"
     )
 
@@ -64,40 +64,36 @@ for i, row in df.iterrows():
   #print(model_response)
 
   if "fact" in model_response.lower()[-40:]:
-      pred_label = "Fact"
+      predict = "Fact"
   elif "opinion" in model_response.lower()[-40:]:
-      pred_label = "Opinion"
+      predict = "Opinion"
   else:
-      pred_label = "none"
+      predict = "none"
 
-  predictions.append(pred_label)
-  print("textindex", i+1, " | model prediction:", pred_label)
+  predictions.append(predict)
+  print("textindex", i+1, " | model prediction:", predict)
 
 output_df = pd.DataFrame({
-    "original_index":        df["original_index"].tolist(),
+    "original_index": df["original_index"].tolist(),
     "Classification": predictions,
-    "drop_row":        df["drop_row"].tolist()
+    "drop_row": df["drop_row"].tolist()
 })
 output_df.to_csv(output_csv, index=False)
 
-y_true = df["Classification"].tolist()
+if input_csv == "datasets/dataset_clean.csv":
+  y_true = df["Classification"].tolist()
+  score = accuracy_score(y_true, predictions)
 
-score = accuracy_score(y_true, predictions)
-
-print("------------------------------")
-print("few shot + chain of thought result")
-print(f"Accuracy: {score:.2%}")
-
-print("Confusion Matrix:")
-print(confusion_matrix(y_true, predictions, labels=["Fact", "Opinion", "none"]))
+  print("few shot + chain of thought result")
+  print(f"Accuracy: {score:.2%}")
+  print("Confusion Matrix:")
+  print(confusion_matrix(y_true, predictions, labels=["Fact", "Opinion", "none"]))
 
 """
-------------------------------
 few shot + chain of thought result
 Accuracy: 85.03%
 Confusion Matrix:
 [[424  18   1]
  [107 303   2]
  [  0   0   0]]
-------------------------------
 """
